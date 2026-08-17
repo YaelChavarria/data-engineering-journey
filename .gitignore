@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Environment files and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+service-account*.json
+
+# Cloud and infrastructure state
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# Generated files and local tooling
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local and large data
+data/raw/
+*.parquet
+*.feather
+*.sqlite
+*.db
+*.zip
