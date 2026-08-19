@@ -15,6 +15,6 @@ Esta carpeta contiene proyectos propios, no copias de los ejercicios originales.
 - Capturas, métricas y resultados.
 - Limitaciones y posibles mejoras.
 
-## Próximo proyecto
+## Primer proyecto
 
-El primer proyecto será un pipeline pequeño de datos públicos con una ejecución reproducible desde Docker o Python, según el alcance final.
+El primer proyecto es [NYC Taxi Data Pipeline](nyc-taxi-pipeline/), un pipeline batch de datos públicos con Python, DuckDB y SQL.

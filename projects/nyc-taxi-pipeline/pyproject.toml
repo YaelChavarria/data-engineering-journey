@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nyc-taxi-pipeline"
+version = "0.1.0"
+description = "Reproducible NYC TLC batch pipeline with Python and DuckDB"
+requires-python = ">=3.12"
+dependencies = [
+    "duckdb>=1.1,<2",
+]
+
+[project.scripts]
+nyc-taxi-pipeline = "nyc_taxi_pipeline.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

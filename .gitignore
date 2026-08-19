@@ -39,4 +39,5 @@ data/raw/
 *.feather
 *.sqlite
 *.db
+*.duckdb
 *.zip

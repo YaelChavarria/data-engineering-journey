@@ -20,7 +20,8 @@ Este repositorio contiene mis notas, decisiones, bitácoras y proyectos propios.
 
 - Primera etapa: configuración del entorno y fundamentos.
 - Primer hito registrado: entorno de desarrollo preparado y verificado.
-- Próximo hito: pipeline de datos pequeño, reproducible y documentado.
+- Segundo hito completado: primer pipeline batch funcional con Python, DuckDB y SQL.
+- Próximo hito: añadir una dimensión de zonas y una validación automatizada en CI.
 
 El progreso se actualizará a medida que cada entregable esté terminado y probado.
 
@@ -65,3 +66,7 @@ No se publican credenciales, tokens, archivos `.env`, rutas personales, configur
 ## Licencia
 
 La licencia de este repositorio se definirá cuando se publique la primera versión estable. Los materiales de terceros conservan sus propias licencias y no quedan cubiertos por una futura licencia de mis notas o código.
+
+## Primer proyecto
+
+[NYC Taxi Data Pipeline](projects/nyc-taxi-pipeline/) es un pipeline batch reproducible que descarga datos públicos, los valida y genera métricas diarias con DuckDB.
