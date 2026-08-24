@@ -1,10 +1,10 @@
 # E-Commerce Lakehouse
 
-Lakehouse local y reproducible para analizar las ventas de una tienda online. El proyecto implementa una arquitectura Medallion con datos sinteticos, DuckDB y Parquet.
+A local, reproducible lakehouse for analyzing e-commerce sales. The project uses synthetic data, DuckDB, Parquet, and a Medallion architecture.
 
-## Problema de negocio
+## Business problem
 
-El equipo de negocio necesita una fuente confiable para conocer ingresos, pedidos completados, productos mas vendidos y valor de vida de los clientes. Las fuentes operacionales estan separadas en clientes, productos, pedidos, lineas de pedido y pagos.
+The business team needs a reliable source for revenue, completed orders, best-selling products, and customer lifetime value. Operational data is separated across customers, products, orders, order lines, and payments.
 
 ## Arquitectura
 
@@ -12,39 +12,39 @@ El equipo de negocio necesita una fuente confiable para conocer ingresos, pedido
 CSV source system
        |
        v
-Bronze: raw CSV -> Parquet, sin cambios de negocio
+Bronze: raw CSV -> Parquet, no business changes
        |
        v
-Silver: tipado, normalizacion y filtros de registros invalidos
+Silver: typed, normalized, and filtered invalid records
        |
        v
-Gold: dimensiones, hechos y metricas para analisis
+Gold: dimensions, facts, and analytical metrics
        |
        v
-Dashboard futuro: Metabase o Streamlit
+Future dashboard: Metabase or Streamlit
 ```
 
-DuckDB mantiene el catalogo local y consulta Parquet. Esto permite practicar patrones de lakehouse sin requerir una cuenta cloud ni un cluster.
+DuckDB maintains the local catalog and queries Parquet. This makes it possible to practice lakehouse patterns without a cloud account or cluster.
 
-## Capas y modelos
+## Layers and models
 
-- `bronze_*`: copia tipada por DuckDB de cada archivo de origen.
-- `silver_*`: datos normalizados con fechas, importes y claves con tipos explicitos.
-- `gold_dim_customer`: dimension de clientes.
-- `gold_dim_product`: dimension de productos.
-- `gold_fact_order`: una fila por pedido con importe y estado de finalizacion.
-- `gold_daily_sales`: pedidos, ingresos y ticket medio por dia.
-- `gold_category_sales`: unidades e ingresos por categoria.
-- `gold_customer_sales`: pedidos y lifetime value por cliente.
+- `bronze_*`: DuckDB-typed copy of each source file
+- `silver_*`: normalized dates, amounts, and keys with explicit types
+- `gold_dim_customer`: customer dimension
+- `gold_dim_product`: product dimension
+- `gold_fact_order`: one row per order with amount and completion status
+- `gold_daily_sales`: orders, revenue, and average order value by day
+- `gold_category_sales`: units and revenue by category
+- `gold_customer_sales`: orders and lifetime value by customer
 
-Los pedidos cancelados permanecen en el hecho para conservar trazabilidad, pero no se incluyen en las metricas de ingresos.
+Cancelled orders remain in the fact table for traceability, but are excluded from revenue metrics.
 
-## Requisitos
+## Requirements
 
 - Python 3.12 o superior.
-- Internet no es necesario: la fuente de demostracion se genera localmente.
+- Internet is not required because the demonstration source is generated locally.
 
-## Instalacion y ejecucion
+## Installation and execution
 
 Desde esta carpeta:
 
@@ -55,32 +55,32 @@ python -m pip install -e .
 python -m ecommerce_lakehouse
 ```
 
-La ejecucion genera datos sinteticos deterministas y crea:
+Execution generates deterministic synthetic data and creates:
 
 ```text
 data/
-├── source/              # CSV de entrada, generado localmente
-├── bronze/              # Parquet raw
-├── silver/              # Parquet limpio
-├── gold/                # Parquet analitico
+├── source/              # Locally generated input CSV
+├── bronze/              # Raw Parquet
+├── silver/              # Clean Parquet
+├── gold/                # Analytical Parquet
 ├── warehouse/
 │   └── ecommerce.duckdb
 └── pipeline_summary.json
 ```
 
-Para procesar CSV existentes:
+To process existing CSV files:
 
 ```powershell
 python -m ecommerce_lakehouse --skip-generate
 ```
 
-## Pruebas
+## Tests
 
 ```powershell
 python -m unittest discover -s tests -v
 ```
 
-Las pruebas usan un directorio temporal, comprueban las tres capas, validan las relaciones entre tablas y verifican que los pedidos cancelados no generen ingresos.
+Tests use a temporary directory, check all three layers, validate table relationships, and verify that cancelled orders do not generate revenue.
 
 ## Docker
 
@@ -89,21 +89,21 @@ docker build -t ecommerce-lakehouse .
 docker run --rm -v "${PWD}\data:/app/data" ecommerce-lakehouse
 ```
 
-## Calidad de datos
+## Data quality
 
 El pipeline comprueba:
 
-- Ausencia de claves duplicadas en clientes y productos.
-- Ausencia de pedidos sin cliente.
-- Ausencia de lineas sin pedido o producto.
-- Cantidades positivas e importes no negativos.
-- Estados de pedido pertenecientes al dominio esperado.
+- No duplicate customer or product keys
+- No orders without a customer
+- No order lines without an order or product
+- Positive quantities and non-negative amounts
+- Order statuses within the expected domain
 
-La ejecucion falla si alguna validacion referencial produce resultados.
+Execution fails if a referential check returns any violations.
 
-## Decisiones y siguientes pasos
+## Decisions and next steps
 
-- Se usa una fuente sintetica pequena para que el proyecto sea barato y reproducible.
-- DuckDB sustituye inicialmente a un warehouse gestionado y facilita la ejecucion local.
-- La siguiente iteracion puede incorporar dbt, MinIO, cargas incrementales y un dashboard.
-- Una version cloud puede mover Bronze a Azure Blob o S3 y Gold a Snowflake, BigQuery o Databricks.
+- A small synthetic source keeps the project inexpensive and reproducible.
+- DuckDB replaces a managed warehouse initially and keeps execution local.
+- The next iteration could add dbt, MinIO, incremental loads, and a dashboard.
+- A cloud version could move Bronze to Azure Blob or S3 and Gold to Snowflake, BigQuery, or Databricks.

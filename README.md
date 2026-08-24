@@ -1,77 +1,74 @@
 # Data Engineering Journey
 
-Ruta personal de aprendizaje para fortalecer mis habilidades como Data Engineer y construir un portafolio técnico reproducible.
+An open, reproducible workspace for strengthening my data engineering practice and documenting the systems I build along the way.
 
-## Objetivo
+## Purpose
 
-Documentar, con transparencia, el proceso de aprendizaje en:
+This repository records practical work in:
 
-- Python y SQL.
-- Docker y Git.
-- Cloud y almacenamiento de datos.
-- Modelado y transformaciones con dbt.
-- Orquestación con Airflow.
-- Procesamiento con PySpark.
-- Calidad, observabilidad y CI/CD para datos.
+- Python and SQL
+- Docker and Git
+- Cloud concepts and data storage
+- Data modeling and transformations with dbt
+- Workflow orchestration with Airflow
+- Data processing with PySpark
+- Data quality, observability, and CI/CD
 
-Este repositorio contiene mis notas, decisiones, bitácoras y proyectos propios. No es una copia ni un repositorio espejo de los cursos utilizados como referencia.
+It includes technical notes, decisions, learning logs, and original projects. It is not a copy or mirror of any course repository.
 
-## Estado actual
+## Current progress
 
-- Primera etapa: configuración del entorno y fundamentos.
-- Primer hito registrado: entorno de desarrollo preparado y verificado.
-- Segundo hito completado: primer pipeline batch funcional con Python, DuckDB y SQL.
-- Tercer hito completado: lakehouse local de e-commerce con arquitectura Medallion.
-- Próximo hito: añadir dbt y una validación automatizada de modelos analiticos.
+- Development environment configured and verified
+- First batch pipeline completed with Python, DuckDB, and SQL
+- Local e-commerce lakehouse completed with a Medallion architecture
+- Next: add dbt and automated validation for analytical models
 
-El progreso se actualizará a medida que cada entregable esté terminado y probado.
+Progress is updated as each deliverable is completed and tested.
 
-## Estructura
+## Repository structure
 
 ```text
 .
-├── learning-log/       # Bitácora de aprendizaje
-├── notes/              # Notas técnicas resumidas y sanitizadas
-├── projects/           # Proyectos propios
-├── roadmap/            # Plan de aprendizaje
-├── resources.md        # Recursos externos utilizados
-└── ATTRIBUTION.md      # Fuentes y atribuciones
+├── learning-log/       # Learning notes and progress updates
+├── notes/              # Short, sanitized technical notes
+├── projects/           # Original projects
+├── roadmap/            # Learning plan
+├── resources.md        # External learning resources
+└── ATTRIBUTION.md      # Sources and attribution
 ```
 
-## Ruta principal
+## Roadmap
 
-Consulta [roadmap/30-day-plan.md](roadmap/30-day-plan.md) para ver el plan de trabajo y sus entregables.
+See [roadmap/30-day-plan.md](roadmap/30-day-plan.md) for the working plan and planned deliverables.
 
-## Proyectos
+## Projects
 
-Cada proyecto propio tendrá su propio README con:
+Each original project includes its own README with:
 
-- Problema que resuelve.
-- Arquitectura.
-- Fuentes y licencia de los datos.
-- Tecnologías utilizadas.
-- Instrucciones de ejecución.
-- Pruebas y validaciones.
-- Resultados, costes y limitaciones.
+- The problem it addresses
+- Architecture and data flow
+- Data sources and licensing
+- Technology choices
+- Setup and execution instructions
+- Tests and validation checks
+- Results, costs, and limitations
 
-La plantilla está en [projects/README.md](projects/README.md).
+The project template is available at [projects/README.md](projects/README.md).
 
-## Fuentes de aprendizaje
+## Learning sources
 
-Las fuentes externas están documentadas en [resources.md](resources.md) y [ATTRIBUTION.md](ATTRIBUTION.md). Sus autores y licencias originales se mantienen intactos.
+External sources are documented in [resources.md](resources.md) and [ATTRIBUTION.md](ATTRIBUTION.md). Original authors and licenses are preserved.
 
-## Privacidad y reproducibilidad
+## Privacy and reproducibility
 
-No se publican credenciales, tokens, archivos `.env`, rutas personales, configuraciones privadas ni datasets grandes. Los datos se descargan desde su fuente oficial cuando sea necesario.
+Credentials, tokens, `.env` files, personal paths, private configuration, and large datasets are not published. Data is downloaded from its official source when required.
 
-## Licencia
+## License
 
-La licencia de este repositorio se definirá cuando se publique la primera versión estable. Los materiales de terceros conservan sus propias licencias y no quedan cubiertos por una futura licencia de mis notas o código.
+The license for this repository will be defined when the first stable version is published. Third-party materials retain their original licenses and are not covered by a future license for my notes or code.
 
-## Primer proyecto
+## Featured projects
 
-[NYC Taxi Data Pipeline](projects/nyc-taxi-pipeline/) es un pipeline batch reproducible que descarga datos públicos, los valida y genera métricas diarias con DuckDB.
+[NYC Taxi Data Pipeline](projects/nyc-taxi-pipeline/) is a reproducible batch pipeline that downloads public data, validates it, and produces daily metrics with DuckDB.
 
-## Segundo proyecto
-
-[E-Commerce Lakehouse](projects/ecommerce-lakehouse/) es un lakehouse local reproducible que genera datos sinteticos de una tienda online y los transforma en capas Bronze, Silver y Gold con DuckDB y Parquet.
+[E-Commerce Lakehouse](projects/ecommerce-lakehouse/) is a local, reproducible lakehouse that generates synthetic e-commerce data and transforms it into Bronze, Silver, and Gold layers with DuckDB and Parquet.

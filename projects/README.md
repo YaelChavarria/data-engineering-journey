@@ -1,24 +1,24 @@
-# Proyectos
+# Projects
 
-Esta carpeta contiene proyectos propios, no copias de los ejercicios originales.
+This directory contains original projects, not copies of course exercises.
 
-## Requisitos para cada proyecto
+## Project requirements
 
-- Nombre y problema de negocio.
-- Diagrama de arquitectura.
-- Descripción del flujo de datos.
-- Fuente y licencia de los datos.
-- Stack técnico y decisiones principales.
-- Instrucciones para ejecutar el proyecto.
-- Variables de entorno documentadas en `.env.example`, sin valores reales.
-- Pruebas o validaciones de calidad.
-- Capturas, métricas y resultados.
-- Limitaciones y posibles mejoras.
+Each project should document:
 
-## Primer proyecto
+- The project name and business problem
+- An architecture diagram
+- The data flow
+- Data sources and licensing
+- The technical stack and key decisions
+- Setup and execution instructions
+- Environment variables in `.env.example`, without real values
+- Tests or data quality checks
+- Screenshots, metrics, and results
+- Limitations and possible improvements
 
-El primer proyecto es [NYC Taxi Data Pipeline](nyc-taxi-pipeline/), un pipeline batch de datos públicos con Python, DuckDB y SQL.
+## Projects
 
-## Segundo proyecto
+[NYC Taxi Data Pipeline](nyc-taxi-pipeline/) is a public-data batch pipeline built with Python, DuckDB, and SQL.
 
-El segundo proyecto es [E-Commerce Lakehouse](ecommerce-lakehouse/), una plataforma local con arquitectura Medallion para analizar pedidos, clientes, productos y pagos.
+[E-Commerce Lakehouse](ecommerce-lakehouse/) is a local Medallion architecture for analyzing orders, customers, products, and payments.

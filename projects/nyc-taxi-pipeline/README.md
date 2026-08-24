@@ -1,28 +1,28 @@
 # NYC Taxi Data Pipeline
 
-Pipeline batch reproducible para descargar, limpiar, validar y agregar un mes de viajes de taxi amarillo de Nueva York.
+A reproducible batch pipeline for downloading, cleaning, validating, and aggregating one month of New York yellow taxi trips.
 
-## Objetivo
+## Objective
 
-Construir una primera evidencia completa de Data Engineering:
+This project demonstrates a complete data engineering workflow:
 
 ```text
-Fuente oficial NYC TLC
+Official NYC TLC source
         |
         v
-Descarga Parquet a raw/
+Download Parquet to raw/
         |
         v
 DuckDB: raw_trips
         |
         v
-DuckDB: stg_trips + controles de calidad
+DuckDB: stg_trips + quality checks
         |
         v
 daily_metrics.parquet
 ```
 
-El proyecto corre localmente y no necesita credenciales, servicios cloud ni una base de datos externa.
+The project runs locally and requires no credentials, cloud services, or external database.
 
 ## Stack
 
@@ -33,19 +33,19 @@ El proyecto corre localmente y no necesita credenciales, servicios cloud ni una 
 - `unittest` para pruebas.
 - Docker opcional.
 
-## Fuente de datos
+## Data source
 
-Los datos proceden de [NYC Taxi and Limousine Commission Trip Record Data](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page).
+Data comes from the [NYC Taxi and Limousine Commission Trip Record Data](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page).
 
-Por defecto se procesa `yellow_tripdata_2024-01.parquet`, descargado desde la URL oficial de archivos TLC. El dataset no se incluye en GitHub; se descarga durante la ejecución y se ignora mediante `.gitignore`.
+By default, the pipeline processes `yellow_tripdata_2024-01.parquet`, downloaded from the official TLC file URL. The dataset is not stored in GitHub; it is downloaded during execution and excluded through `.gitignore`.
 
-## Requisitos
+## Requirements
 
 - Python 3.12 o superior.
 - Acceso a Internet durante la primera ejecución.
 - Aproximadamente 1 GB de espacio temporal disponible, dependiendo de la versión del dataset y de DuckDB.
 
-## Instalación
+## Installation
 
 Desde esta carpeta:
 
@@ -62,21 +62,21 @@ Si PowerShell bloquea la activación, se puede ejecutar directamente:
 python -m pip install -e .
 ```
 
-## Ejecución
+## Execution
 
-Procesar enero de 2024:
+Process January 2024:
 
 ```powershell
 python -m nyc_taxi_pipeline --month 2024-01
 ```
 
-Para descargar nuevamente el archivo:
+To download the file again:
 
 ```powershell
 python -m nyc_taxi_pipeline --month 2024-01 --force-download
 ```
 
-El pipeline crea localmente:
+The pipeline creates locally:
 
 ```text
 data/
@@ -88,17 +88,17 @@ data/
     └── nyc_taxi.duckdb
 ```
 
-Estos artefactos están excluidos de GitHub porque son reproducibles y pueden ser grandes.
+These artifacts are excluded from GitHub because they are reproducible and can be large.
 
-## Pruebas
+## Tests
 
 ```powershell
 python -m unittest discover -s tests -v
 ```
 
-Las pruebas usan datos sintéticos creados temporalmente. No descargan el dataset real.
+Tests use temporary synthetic data and do not download the real dataset.
 
-## Ejecución con Docker
+## Docker execution
 
 Construir la imagen:
 
@@ -112,62 +112,62 @@ Ejecutar conservando los resultados en la carpeta local:
 docker run --rm -v "${PWD}\data:/app/data" nyc-taxi-pipeline --month 2024-01
 ```
 
-## Transformaciones
+## Transformations
 
-La tabla `stg_trips` normaliza los campos principales y descarta registros que no pueden analizarse de forma segura:
+The `stg_trips` table normalizes key fields and drops records that cannot be analyzed safely:
 
-- Fechas de recogida o entrega nulas.
-- Entregas anteriores a la recogida.
-- Distancias negativas.
-- Importes totales negativos.
+- Null pickup or drop-off timestamps
+- Drop-off timestamps earlier than pickup timestamps
+- Negative distances
+- Negative total amounts
 
-La tabla `daily_metrics` contiene:
+The `daily_metrics` table contains:
 
-- Fecha.
-- Número de viajes.
-- Pasajeros.
-- Ingresos totales.
-- Distancia media.
-- Importe medio.
+- Date
+- Trip count
+- Passenger count
+- Total revenue
+- Average distance
+- Average amount
 
-## Calidad de datos
+## Data quality
 
-El resumen de ejecución registra:
+The execution summary records:
 
-- Filas leídas de la fuente.
-- Filas aceptadas en staging.
-- Filas descartadas.
-- Nulos y valores inválidos detectados.
-- Número de días agregados.
+- Rows read from the source
+- Rows accepted into staging
+- Rows dropped
+- Nulls and invalid values detected
+- Number of aggregated days
 
-El proceso falla si la tabla de staging queda vacía o si contiene registros inválidos después de la limpieza.
+The process fails if the staging table is empty or contains invalid records after cleaning.
 
-## Última ejecución verificada
+## Last verified run
 
-La ejecución local contra enero de 2024 produjo:
+The local run against January 2024 produced:
 
-| Métrica | Resultado |
+| Metric | Result |
 |---|---:|
-| Filas leídas | 2,964,624 |
-| Filas aceptadas | 2,929,064 |
-| Filas descartadas | 35,560 |
-| Filas inválidas después de limpiar | 0 |
-| Días agregados | 35 |
+| Rows read | 2,964,624 |
+| Rows accepted | 2,929,064 |
+| Rows dropped | 35,560 |
+| Invalid rows after cleaning | 0 |
+| Days aggregated | 35 |
 
-Las cuatro pruebas unitarias también pasan correctamente.
+All four unit tests also pass.
 
-GitHub Actions ejecuta estas pruebas automáticamente cuando cambia este proyecto.
+GitHub Actions runs these tests automatically when this project changes.
 
-## Decisiones y limitaciones
+## Decisions and limitations
 
-- Se eligió DuckDB porque permite practicar SQL analítico sobre Parquet sin administrar infraestructura.
-- Se mantiene el alcance batch para completar un pipeline funcional antes de añadir Airflow o cloud.
-- El pipeline no incorpora todavía una tabla de zonas geográficas ni un dashboard.
-- El dataset puede cambiar de tamaño o esquema; el esquema esperado se valida durante la carga.
+- DuckDB was chosen to practice analytical SQL over Parquet without managing infrastructure.
+- The scope remains batch to complete a functional pipeline before adding Airflow or cloud services.
+- The pipeline does not yet include a geographic zone dimension or dashboard.
+- The dataset may change in size or schema; the expected schema is validated during loading.
 
-## Próximas mejoras
+## Next improvements
 
-1. Añadir dimensión de zonas de taxi.
-2. Añadir tests de regresión sobre el resumen.
-3. Publicar una versión en Azure Storage o BigQuery.
-4. Orquestar la ejecución con Airflow.
+1. Add a taxi-zone dimension.
+2. Add regression tests for the execution summary.
+3. Publish a version using Azure Storage or BigQuery.
+4. Orchestrate execution with Airflow.
