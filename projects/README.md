@@ -18,3 +18,7 @@ Esta carpeta contiene proyectos propios, no copias de los ejercicios originales.
 ## Primer proyecto
 
 El primer proyecto es [NYC Taxi Data Pipeline](nyc-taxi-pipeline/), un pipeline batch de datos públicos con Python, DuckDB y SQL.
+
+## Segundo proyecto
+
+El segundo proyecto es [E-Commerce Lakehouse](ecommerce-lakehouse/), una plataforma local con arquitectura Medallion para analizar pedidos, clientes, productos y pagos.

@@ -21,7 +21,8 @@ Este repositorio contiene mis notas, decisiones, bitácoras y proyectos propios.
 - Primera etapa: configuración del entorno y fundamentos.
 - Primer hito registrado: entorno de desarrollo preparado y verificado.
 - Segundo hito completado: primer pipeline batch funcional con Python, DuckDB y SQL.
-- Próximo hito: añadir una dimensión de zonas y una validación automatizada en CI.
+- Tercer hito completado: lakehouse local de e-commerce con arquitectura Medallion.
+- Próximo hito: añadir dbt y una validación automatizada de modelos analiticos.
 
 El progreso se actualizará a medida que cada entregable esté terminado y probado.
 
@@ -70,3 +71,7 @@ La licencia de este repositorio se definirá cuando se publique la primera versi
 ## Primer proyecto
 
 [NYC Taxi Data Pipeline](projects/nyc-taxi-pipeline/) es un pipeline batch reproducible que descarga datos públicos, los valida y genera métricas diarias con DuckDB.
+
+## Segundo proyecto
+
+[E-Commerce Lakehouse](projects/ecommerce-lakehouse/) es un lakehouse local reproducible que genera datos sinteticos de una tienda online y los transforma en capas Bronze, Silver y Gold con DuckDB y Parquet.
