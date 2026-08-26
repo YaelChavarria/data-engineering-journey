@@ -55,6 +55,13 @@ class EcommerceLakehouseTests(unittest.TestCase):
         self.assertIn("units_sold", columns)
         self.assertEqual(category_count, 4)
 
+    def test_incremental_run_appends_new_orders(self) -> None:
+        generate_source_data(self.data_dir / "source", order_count=40)
+        summary = run_pipeline(self.data_dir, incremental=True)
+        self.assertEqual(summary["pipeline_mode"], "incremental")
+        self.assertEqual(summary["gold_rows"]["fact_order"], 40)
+        self.assertEqual(summary["completed_orders"], 37)
+
 
 if __name__ == "__main__":
     unittest.main()

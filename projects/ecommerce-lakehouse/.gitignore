@@ -9,3 +9,6 @@ data/pipeline_summary.json
 .venv/
 __pycache__/
 *.egg-info/
+dbt/target/
+dbt/logs/
+dbt/.user.yml

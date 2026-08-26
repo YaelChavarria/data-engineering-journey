@@ -9,6 +9,8 @@ description = "Reproducible e-commerce lakehouse with Bronze, Silver and Gold la
 requires-python = ">=3.12"
 dependencies = [
     "duckdb>=1.1,<2",
+    "dbt-duckdb>=1.9,<2",
+    "streamlit>=1.40,<2",
 ]
 
 [project.scripts]

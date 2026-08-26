@@ -1,0 +1,8 @@
+ecommerce_lakehouse:
+  target: local
+  outputs:
+    local:
+      type: duckdb
+      path: "{{ env_var('ECOMMERCE_DB_PATH') }}"
+      schema: main
+      threads: 1

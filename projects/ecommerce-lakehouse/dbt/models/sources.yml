@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: ecommerce
+    description: "Validated Silver tables produced by the Python ingestion step."
+    schema: main
+    tables:
+      - name: silver_customers
+      - name: silver_products
+      - name: silver_orders
+      - name: silver_order_items
+      - name: silver_payments

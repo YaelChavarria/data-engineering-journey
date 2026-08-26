@@ -1,10 +1,17 @@
-"""Bronze/Silver/Gold pipeline implemented with DuckDB and Parquet."""
+"""Ingest and validate the local e-commerce lakehouse.
+
+Python owns ingestion and the Silver layer. dbt owns the analytical Gold
+models so that business logic is documented, testable and easy to extend.
+"""
 
 from __future__ import annotations
 
 import json
+import os
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
+import subprocess
 
 import duckdb
 
@@ -34,8 +41,12 @@ def _count(connection: duckdb.DuckDBPyConnection, table: str) -> int:
     return int(connection.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0])
 
 
-def run_pipeline(data_dir: Path) -> dict:
-    """Run all lakehouse layers and return an execution summary."""
+def run_pipeline(data_dir: Path, incremental: bool = False) -> dict:
+    """Run ingestion, quality checks and dbt models.
+
+    A full refresh is the default to keep local runs deterministic. Incremental
+    runs append only order IDs not already present in the Gold fact table.
+    """
     source_dir = data_dir / "source"
     bronze_dir = data_dir / "bronze"
     silver_dir = data_dir / "silver"
@@ -164,77 +175,14 @@ def run_pipeline(data_dir: Path) -> dict:
         if any(quality_checks.values()):
             raise ValueError(f"Data quality checks failed: {quality_checks}")
 
-        connection.execute(
-            """
-            CREATE OR REPLACE TABLE gold_dim_customer AS
-            SELECT customer_id, full_name, email, country, registered_date
-            FROM silver_customers
-            """
-        )
-        connection.execute(
-            """
-            CREATE OR REPLACE TABLE gold_dim_product AS
-            SELECT product_id, product_name, category, unit_price
-            FROM silver_products
-            """
-        )
-        connection.execute(
-            """
-            CREATE OR REPLACE TABLE gold_fact_order AS
-            SELECT o.order_id,
-                   o.customer_id,
-                   o.order_date,
-                   o.order_status,
-                   COALESCE(SUM(i.quantity * i.unit_price), 0)::DECIMAL(12, 2) AS order_total,
-                   COALESCE(p.amount, 0)::DECIMAL(12, 2) AS paid_amount,
-                   CASE WHEN o.order_status <> 'cancelled' THEN TRUE ELSE FALSE END AS is_completed
-            FROM silver_orders o
-            LEFT JOIN silver_order_items i ON i.order_id = o.order_id
-            LEFT JOIN silver_payments p ON p.order_id = o.order_id
-            GROUP BY o.order_id, o.customer_id, o.order_date, o.order_status, p.amount
-            """
-        )
-        connection.execute(
-            """
-            CREATE OR REPLACE TABLE gold_daily_sales AS
-            SELECT order_date,
-                   COUNT(*) AS order_count,
-                   SUM(order_total)::DECIMAL(12, 2) AS revenue,
-                   ROUND(AVG(order_total), 2)::DECIMAL(12, 2) AS average_order_value
-            FROM gold_fact_order
-            WHERE is_completed
-            GROUP BY order_date
-            ORDER BY order_date
-            """
-        )
-        connection.execute(
-            """
-            CREATE OR REPLACE TABLE gold_category_sales AS
-            SELECT p.category,
-                   SUM(i.quantity) AS units_sold,
-                   SUM(i.quantity * i.unit_price)::DECIMAL(12, 2) AS revenue
-            FROM silver_order_items i
-            JOIN silver_orders o ON o.order_id = i.order_id
-            JOIN silver_products p ON p.product_id = i.product_id
-            WHERE o.order_status <> 'cancelled'
-            GROUP BY p.category
-            ORDER BY revenue DESC
-            """
-        )
-        connection.execute(
-            """
-            CREATE OR REPLACE TABLE gold_customer_sales AS
-            SELECT c.customer_id,
-                   c.full_name,
-                   COUNT(f.order_id) AS order_count,
-                   SUM(f.order_total)::DECIMAL(12, 2) AS lifetime_value
-            FROM gold_dim_customer c
-            JOIN gold_fact_order f ON f.customer_id = c.customer_id
-            WHERE f.is_completed
-            GROUP BY c.customer_id, c.full_name
-            ORDER BY lifetime_value DESC
-            """
-        )
+        # Close before dbt opens the same DuckDB file to avoid file locks.
+    finally:
+        connection.close()
+
+    _run_dbt(data_dir, database_path, full_refresh=not incremental)
+
+    connection = duckdb.connect(str(database_path), read_only=True)
+    try:
         gold_tables = [
             "gold_dim_customer",
             "gold_dim_product",
@@ -242,6 +190,7 @@ def run_pipeline(data_dir: Path) -> dict:
             "gold_daily_sales",
             "gold_category_sales",
             "gold_customer_sales",
+            "gold_product_sales",
         ]
         for table in gold_tables:
             _copy_parquet(connection, table, gold_dir)
@@ -257,6 +206,7 @@ def run_pipeline(data_dir: Path) -> dict:
         summary = {
             "generated_at_utc": datetime.now(timezone.utc).isoformat(),
             "database": str(database_path),
+            "pipeline_mode": "incremental" if incremental else "full_refresh",
             "bronze_rows": raw_counts,
             "silver_rows": {table.removeprefix("silver_"): _count(connection, table) for table in silver_tables},
             "gold_rows": {table.removeprefix("gold_"): _count(connection, table) for table in gold_tables},
@@ -270,6 +220,44 @@ def run_pipeline(data_dir: Path) -> dict:
         return summary
     finally:
         connection.close()
+
+
+def _run_dbt(data_dir: Path, database_path: Path, full_refresh: bool) -> None:
+    """Build Gold models and their schema tests with dbt-duckdb."""
+    project_dir = Path(
+        os.environ.get("ECOMMERCE_DBT_PROJECT_DIR", str(Path.cwd() / "dbt"))
+    ).resolve()
+    if not project_dir.exists():
+        raise FileNotFoundError(f"dbt project not found: {project_dir}")
+
+    environment = os.environ.copy()
+    environment["ECOMMERCE_DB_PATH"] = str(database_path.resolve())
+    command = [
+        sys.executable,
+        "-m",
+        "dbt.cli.main",
+        "build",
+        "--project-dir",
+        str(project_dir),
+        "--profiles-dir",
+        str(project_dir),
+        "--target",
+        "local",
+    ]
+    if full_refresh:
+        command.append("--full-refresh")
+
+    result = subprocess.run(
+        command,
+        cwd=data_dir.parent,
+        env=environment,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode:
+        output = "\n".join(part for part in (result.stdout, result.stderr) if part)
+        raise RuntimeError(f"dbt build failed:\n{output}")
 
 
 def _count_query(connection: duckdb.DuckDBPyConnection, query: str) -> int:

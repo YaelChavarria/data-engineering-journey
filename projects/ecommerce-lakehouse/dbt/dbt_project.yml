@@ -1,0 +1,15 @@
+name: ecommerce_lakehouse
+version: '1.0.0'
+config-version: 2
+
+profile: ecommerce_lakehouse
+
+model-paths: [models]
+test-paths: [tests]
+clean-targets:
+  - target
+  - dbt_packages
+
+models:
+  ecommerce_lakehouse:
+    +on_schema_change: fail

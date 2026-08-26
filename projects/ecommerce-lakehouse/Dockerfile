@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY pyproject.toml ./
 COPY src ./src
+COPY dbt ./dbt
+COPY dashboard ./dashboard
 
 RUN pip install --no-cache-dir .
 

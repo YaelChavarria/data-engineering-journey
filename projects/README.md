@@ -21,4 +21,4 @@ Each project should document:
 
 [NYC Taxi Data Pipeline](nyc-taxi-pipeline/) is a public-data batch pipeline built with Python, DuckDB, and SQL.
 
-[E-Commerce Lakehouse](ecommerce-lakehouse/) is a local Medallion architecture for analyzing orders, customers, products, and payments.
+[E-Commerce Lakehouse](ecommerce-lakehouse/) is a local Medallion architecture with dbt Gold models, incremental loads, quality tests, and a Streamlit dashboard for analyzing orders, customers, products, and payments.

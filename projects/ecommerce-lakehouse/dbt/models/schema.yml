@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: gold_dim_customer
+    columns:
+      - name: customer_id
+        tests: [not_null, unique]
+      - name: email
+        tests: [not_null]
+  - name: gold_dim_product
+    columns:
+      - name: product_id
+        tests: [not_null, unique]
+  - name: gold_fact_order
+    columns:
+      - name: order_id
+        tests: [not_null, unique]
+      - name: customer_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('gold_dim_customer')
+              field: customer_id
+      - name: order_status
+        tests:
+          - accepted_values:
+              values: ['delivered', 'shipped', 'cancelled']
+  - name: gold_daily_sales
+    columns:
+      - name: order_date
+        tests: [not_null, unique]
+  - name: gold_product_sales
+    columns:
+      - name: product_id
+        tests: [not_null, unique]
