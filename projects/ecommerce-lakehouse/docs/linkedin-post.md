@@ -38,7 +38,7 @@ Stack: Python, DuckDB, Parquet, dbt, Streamlit, Docker and GitHub Actions.
 
 This is a simulated case study using deterministic synthetic data. It is designed to demonstrate the path from a business requirement to a tested, decision-ready data product.
 
-Repository and demo: [link]
+Portfolio and project case study: https://yaelchavarria.github.io/portfolio/
 
 I’m open to remote Data Engineering, Analytics Engineering and Data Product opportunities with international teams. Based in Mexico and comfortable working in English across distributed teams.
 ```
