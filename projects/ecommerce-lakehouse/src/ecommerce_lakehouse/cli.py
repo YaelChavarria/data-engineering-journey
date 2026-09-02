@@ -11,7 +11,7 @@ from .pipeline import run_pipeline
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run the e-commerce lakehouse")
+    parser = argparse.ArgumentParser(description="Run the Revenue Protection data platform")
     parser.add_argument("--data-dir", type=Path, default=Path("data"))
     parser.add_argument(
         "--skip-generate",

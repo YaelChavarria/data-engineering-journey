@@ -55,6 +55,25 @@ class EcommerceLakehouseTests(unittest.TestCase):
         self.assertIn("units_sold", columns)
         self.assertEqual(category_count, 4)
 
+    def test_revenue_protection_models_expose_operational_metrics(self) -> None:
+        connection = duckdb.connect(str(self.data_dir / "warehouse" / "ecommerce.duckdb"), read_only=True)
+        try:
+            leakage = connection.execute(
+                "SELECT SUM(leakage_amount) FROM gold_revenue_leakage"
+            ).fetchone()[0]
+            late_orders = connection.execute(
+                "SELECT SUM(late_orders) FROM gold_operations_daily"
+            ).fetchone()[0]
+            fact_columns = [
+                row[0] for row in connection.execute("DESCRIBE gold_fact_order").fetchall()
+            ]
+        finally:
+            connection.close()
+        self.assertGreater(float(leakage), 0)
+        self.assertGreater(int(late_orders), 0)
+        self.assertIn("net_revenue", fact_columns)
+        self.assertIn("is_late", fact_columns)
+
     def test_incremental_run_appends_new_orders(self) -> None:
         generate_source_data(self.data_dir / "source", order_count=40)
         summary = run_pipeline(self.data_dir, incremental=True)

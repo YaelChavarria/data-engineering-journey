@@ -12,6 +12,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 import subprocess
+import time
 
 import duckdb
 
@@ -22,6 +23,16 @@ SOURCE_TABLES = {
     "orders": ["order_id", "customer_id", "order_date", "order_status", "shipping_country"],
     "order_items": ["order_item_id", "order_id", "product_id", "quantity", "unit_price"],
     "payments": ["payment_id", "order_id", "payment_method", "payment_status", "amount"],
+    "shipments": [
+        "shipment_id",
+        "order_id",
+        "carrier",
+        "promised_delivery_date",
+        "actual_delivery_date",
+        "shipping_cost",
+        "shipment_status",
+    ],
+    "refunds": ["refund_id", "order_id", "refund_date", "refund_reason", "refund_status", "amount"],
 }
 
 
@@ -47,6 +58,7 @@ def run_pipeline(data_dir: Path, incremental: bool = False) -> dict:
     A full refresh is the default to keep local runs deterministic. Incremental
     runs append only order IDs not already present in the Gold fact table.
     """
+    started = time.perf_counter()
     source_dir = data_dir / "source"
     bronze_dir = data_dir / "bronze"
     silver_dir = data_dir / "silver"
@@ -137,12 +149,46 @@ def run_pipeline(data_dir: Path, incremental: bool = False) -> dict:
             WHERE payment_id IS NOT NULL AND order_id IS NOT NULL AND amount >= 0
             """
         )
+        connection.execute(
+            """
+            CREATE OR REPLACE TABLE silver_shipments AS
+            SELECT TRIM(shipment_id) AS shipment_id,
+                   CAST(order_id AS INTEGER) AS order_id,
+                   LOWER(TRIM(carrier)) AS carrier,
+                   CAST(promised_delivery_date AS DATE) AS promised_delivery_date,
+                   TRY_CAST(actual_delivery_date AS DATE) AS actual_delivery_date,
+                   CAST(shipping_cost AS DECIMAL(12, 2)) AS shipping_cost,
+                   LOWER(TRIM(shipment_status)) AS shipment_status
+            FROM bronze_shipments
+            WHERE shipment_id IS NOT NULL
+              AND order_id IS NOT NULL
+              AND promised_delivery_date IS NOT NULL
+              AND shipping_cost >= 0
+            """
+        )
+        connection.execute(
+            """
+            CREATE OR REPLACE TABLE silver_refunds AS
+            SELECT TRIM(refund_id) AS refund_id,
+                   CAST(order_id AS INTEGER) AS order_id,
+                   CAST(refund_date AS DATE) AS refund_date,
+                   LOWER(TRIM(refund_reason)) AS refund_reason,
+                   LOWER(TRIM(refund_status)) AS refund_status,
+                   CAST(amount AS DECIMAL(12, 2)) AS amount
+            FROM bronze_refunds
+            WHERE refund_id IS NOT NULL
+              AND order_id IS NOT NULL
+              AND amount > 0
+            """
+        )
         silver_tables = [
             "silver_customers",
             "silver_products",
             "silver_orders",
             "silver_order_items",
             "silver_payments",
+            "silver_shipments",
+            "silver_refunds",
         ]
         for table in silver_tables:
             _copy_parquet(connection, table, silver_dir)
@@ -171,6 +217,16 @@ def run_pipeline(data_dir: Path, incremental: bool = False) -> dict:
                 """SELECT COUNT(*) FROM silver_order_items i
                    WHERE NOT EXISTS (SELECT 1 FROM silver_products p WHERE p.product_id = i.product_id)""",
             ),
+            "orphan_shipments": _count_query(
+                connection,
+                """SELECT COUNT(*) FROM silver_shipments s
+                   WHERE NOT EXISTS (SELECT 1 FROM silver_orders o WHERE o.order_id = s.order_id)""",
+            ),
+            "orphan_refunds": _count_query(
+                connection,
+                """SELECT COUNT(*) FROM silver_refunds r
+                   WHERE NOT EXISTS (SELECT 1 FROM silver_orders o WHERE o.order_id = r.order_id)""",
+            ),
         }
         if any(quality_checks.values()):
             raise ValueError(f"Data quality checks failed: {quality_checks}")
@@ -191,6 +247,8 @@ def run_pipeline(data_dir: Path, incremental: bool = False) -> dict:
             "gold_category_sales",
             "gold_customer_sales",
             "gold_product_sales",
+            "gold_operations_daily",
+            "gold_revenue_leakage",
         ]
         for table in gold_tables:
             _copy_parquet(connection, table, gold_dir)
@@ -200,7 +258,12 @@ def run_pipeline(data_dir: Path, incremental: bool = False) -> dict:
         )
         revenue = float(
             connection.execute(
-                "SELECT COALESCE(SUM(order_total), 0) FROM gold_fact_order WHERE is_completed"
+                "SELECT COALESCE(SUM(net_revenue), 0) FROM gold_fact_order WHERE is_completed"
+            ).fetchone()[0]
+        )
+        leakage = float(
+            connection.execute(
+                "SELECT COALESCE(SUM(leakage_amount), 0) FROM gold_fact_order"
             ).fetchone()[0]
         )
         summary = {
@@ -212,7 +275,9 @@ def run_pipeline(data_dir: Path, incremental: bool = False) -> dict:
             "gold_rows": {table.removeprefix("gold_"): _count(connection, table) for table in gold_tables},
             "quality_checks": quality_checks,
             "completed_orders": completed_orders,
-            "completed_revenue": round(revenue, 2),
+            "completed_net_revenue": round(revenue, 2),
+            "revenue_leakage": round(leakage, 2),
+            "pipeline_duration_seconds": round(time.perf_counter() - started, 3),
         }
         (data_dir / "pipeline_summary.json").write_text(
             json.dumps(summary, indent=2), encoding="utf-8"

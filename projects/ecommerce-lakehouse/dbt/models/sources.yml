@@ -10,3 +10,5 @@ sources:
       - name: silver_orders
       - name: silver_order_items
       - name: silver_payments
+      - name: silver_shipments
+      - name: silver_refunds

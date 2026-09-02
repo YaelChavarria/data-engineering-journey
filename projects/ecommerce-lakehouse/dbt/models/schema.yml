@@ -19,12 +19,18 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('gold_dim_customer')
-              field: customer_id
+              arguments:
+                to: ref('gold_dim_customer')
+                field: customer_id
       - name: order_status
         tests:
           - accepted_values:
-              values: ['delivered', 'shipped', 'cancelled']
+              arguments:
+                values: ['delivered', 'shipped', 'cancelled']
+      - name: net_revenue
+        tests: [not_null]
+      - name: leakage_amount
+        tests: [not_null]
   - name: gold_daily_sales
     columns:
       - name: order_date
@@ -33,3 +39,17 @@ models:
     columns:
       - name: product_id
         tests: [not_null, unique]
+  - name: gold_operations_daily
+    columns:
+      - name: order_date
+        tests: [not_null, unique]
+      - name: net_revenue
+        tests: [not_null]
+      - name: late_delivery_rate
+        tests: [not_null]
+  - name: gold_revenue_leakage
+    columns:
+      - name: leakage_type
+        tests: [not_null, unique]
+      - name: leakage_amount
+        tests: [not_null]
