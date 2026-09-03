@@ -22,3 +22,5 @@ Each project should document:
 [NYC Taxi Data Pipeline](nyc-taxi-pipeline/) is a public-data batch pipeline built with Python, DuckDB, and SQL.
 
 [Revenue Protection Data Platform](ecommerce-lakehouse/) is a local-first e-commerce platform that turns orders, payments, shipments and refunds into tested revenue-leakage and operational-priority signals. It includes product documentation, a control-tower dashboard, incremental dbt models and CI.
+
+[Client Data Operations Hub](client-data-ops-hub/) is a managed data service blueprint that validates client exports, blocks unsafe deliveries, produces recurring KPI deliverables, and records quality and SLA evidence for every handoff.

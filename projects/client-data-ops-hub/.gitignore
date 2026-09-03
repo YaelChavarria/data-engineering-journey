@@ -1,0 +1,15 @@
+data/source/*.csv
+data/bronze/
+data/silver/
+data/gold/
+data/warehouse/
+data/quality_report.json
+data/service_manifest.json
+*.duckdb
+*.duckdb.wal
+.venv/
+__pycache__/
+*.egg-info/
+dbt/target/
+dbt/logs/
+dbt/.user.yml

@@ -21,6 +21,7 @@ It includes technical notes, decisions, learning logs, and original projects. It
 - Development environment configured and verified
 - First batch pipeline completed with Python, DuckDB, and SQL
 - Revenue Protection Data Platform completed with operational leakage models, quality tests, incremental loads, CI, and a Streamlit control tower
+- Client Data Operations Hub completed as a managed-service blueprint with data contracts, quality gates, client deliverables, SLA evidence, and incident handling
 - Next: move Bronze to cloud storage and automate execution
 
 Progress is updated as each deliverable is completed and tested.
@@ -72,3 +73,5 @@ The license for this repository will be defined when the first stable version is
 [NYC Taxi Data Pipeline](projects/nyc-taxi-pipeline/) is a reproducible batch pipeline that downloads public data, validates it, and produces daily metrics with DuckDB.
 
 [Revenue Protection Data Platform](projects/ecommerce-lakehouse/) is a local-first e-commerce data platform that identifies refund and late-delivery leakage, produces tested dbt decision models, and presents operational priorities in a Streamlit control tower. It includes product requirements, architecture, a data contract, an incident runbook, CI, and incremental loads.
+
+[Client Data Operations Hub](projects/client-data-ops-hub/) is a reproducible blueprint for outsourcing recurring data work: it validates a client's exports, creates a scorecard and account health deliverables, and attaches quality, SLA, security and recovery evidence to the delivery.

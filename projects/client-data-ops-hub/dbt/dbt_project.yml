@@ -1,0 +1,13 @@
+name: client_data_ops_hub
+version: '1.0.0'
+config-version: 2
+
+profile: client_data_ops_hub
+model-paths: [models]
+clean-targets:
+  - target
+  - dbt_packages
+
+models:
+  client_data_ops_hub:
+    +on_schema_change: fail

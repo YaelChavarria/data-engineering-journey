@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: client_delivery
+    description: "Validated Silver tables from the client export intake step."
+    schema: main
+    tables:
+      - name: silver_accounts
+      - name: silver_invoices
+      - name: silver_support_tickets
+      - name: silver_account_events

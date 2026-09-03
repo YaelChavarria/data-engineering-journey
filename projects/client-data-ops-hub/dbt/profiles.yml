@@ -1,0 +1,8 @@
+client_data_ops_hub:
+  target: local
+  outputs:
+    local:
+      type: duckdb
+      path: "{{ env_var('CLIENT_DATA_OPS_DB_PATH') }}"
+      schema: main
+      threads: 1

@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: gold_client_scorecard
+    columns:
+      - name: client_id
+        tests: [not_null, unique]
+      - name: reporting_period
+        tests: [not_null]
+      - name: mrr
+        tests: [not_null]
+      - name: collection_rate
+        tests: [not_null]
+  - name: gold_account_health
+    columns:
+      - name: account_id
+        tests: [not_null, unique]
+      - name: account_status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['active', 'trial', 'churned']
+      - name: health_segment
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['healthy', 'needs_attention', 'trial', 'churned']
+  - name: gold_daily_operations
+    columns:
+      - name: metric_date
+        tests: [not_null, unique]
+      - name: paid_revenue
+        tests: [not_null]
