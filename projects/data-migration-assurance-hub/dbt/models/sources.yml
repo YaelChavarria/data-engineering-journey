@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: migration
+    description: "Typed source and target snapshots produced by the migration intake step."
+    schema: main
+    tables:
+      - name: silver_source_accounts
+      - name: silver_target_accounts
+      - name: silver_source_invoices
+      - name: silver_target_invoices
+      - name: silver_source_transactions
+      - name: silver_target_transactions
+      - name: silver_source_contacts
+      - name: silver_target_contacts

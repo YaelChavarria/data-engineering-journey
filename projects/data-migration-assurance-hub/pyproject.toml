@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "data-migration-assurance-hub"
+version = "0.1.0"
+description = "A reconciliation and cutover control room for client data migrations"
+requires-python = ">=3.12"
+dependencies = [
+    "duckdb>=1.1,<2",
+    "dbt-duckdb>=1.9,<2",
+    "pandas>=2.2,<3",
+    "streamlit>=1.40,<2",
+]
+
+[project.scripts]
+data-migration-assurance = "data_migration_assurance.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

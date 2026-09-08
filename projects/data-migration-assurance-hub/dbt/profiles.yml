@@ -1,0 +1,8 @@
+data_migration_assurance_hub:
+  target: local
+  outputs:
+    local:
+      type: duckdb
+      path: "{{ env_var('DATA_MIGRATION_DB_PATH') }}"
+      schema: main
+      threads: 1

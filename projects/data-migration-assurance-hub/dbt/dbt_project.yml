@@ -1,0 +1,13 @@
+name: data_migration_assurance_hub
+version: '1.0.0'
+config-version: 2
+
+profile: data_migration_assurance_hub
+model-paths: [models]
+clean-targets:
+  - target
+  - dbt_packages
+
+models:
+  data_migration_assurance_hub:
+    +on_schema_change: fail

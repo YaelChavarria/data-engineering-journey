@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: gold_reconciliation
+    columns:
+      - name: entity
+        tests: [not_null, unique]
+      - name: source_count
+        tests: [not_null]
+      - name: target_count
+        tests: [not_null]
+      - name: reconciliation_status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['passed', 'review']
+  - name: gold_exception_queue
+    columns:
+      - name: exception_id
+        tests: [not_null, unique]
+      - name: severity
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['high', 'medium']
+      - name: status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['open']
+  - name: gold_cutover_readiness
+    columns:
+      - name: migration_id
+        tests: [not_null, unique]
+      - name: cutover_decision
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['HOLD', 'READY']
