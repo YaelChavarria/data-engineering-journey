@@ -42,6 +42,8 @@ The pipeline separates source quality from migration assurance. A malformed sour
 
 ## Control Room preview
 
+[![Migration Control Room preview](docs/migration-control-room-linkedin.svg)](https://github.com/YaelChavarria/data-engineering-journey/tree/main/projects/data-migration-assurance-hub)
+
 The dashboard is designed as an operations interface rather than a generic KPI dashboard:
 
 - A single `READY` or `HOLD` decision at the top

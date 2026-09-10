@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500" role="img" aria-labelledby="title desc">
+  <title id="title">Data Migration Assurance Hub - LinkedIn project visual</title>
+  <desc id="desc">Editorial project visual showing how a Data Project Manager turns migration risk into a documented cutover decision.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#101412"/>
+      <stop offset="1" stop-color="#1d2b25"/>
+    </linearGradient>
+    <linearGradient id="signal" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#c9e8c1"/>
+      <stop offset="1" stop-color="#8fc9a1"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000000" flood-opacity=".22"/>
+    </filter>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="26"/>
+    </filter>
+    <style>
+      .sans { font-family: Inter, Arial, sans-serif; }
+      .mono { font-family: "Courier New", monospace; }
+      .cream { fill: #f3f1ea; }
+      .muted { fill: #9baaa1; }
+      .green { fill: #a9d6b2; }
+      .ink { fill: #18221e; }
+      .line { stroke: #52665b; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="1500" fill="url(#bg)"/>
+  <circle cx="1020" cy="220" r="190" fill="#c9e8c1" opacity=".10" filter="url(#glow)"/>
+  <circle cx="100" cy="1210" r="210" fill="#b24a42" opacity=".12" filter="url(#glow)"/>
+
+  <!-- Fine grid gives the visual a systems feel without becoming a dashboard screenshot. -->
+  <g opacity=".10" stroke="#d8e7da" stroke-width="1">
+    <path d="M0 120H1200M0 240H1200M0 360H1200M0 480H1200M0 600H1200M0 720H1200M0 840H1200M0 960H1200M0 1080H1200M0 1200H1200M0 1320H1200M120 0V1500M240 0V1500M360 0V1500M480 0V1500M600 0V1500M720 0V1500M840 0V1500M960 0V1500M1080 0V1500"/>
+  </g>
+
+  <!-- Header -->
+  <text x="76" y="82" class="mono green" font-size="16" font-weight="700" letter-spacing="2.4">DATA PROJECT MANAGEMENT / 01</text>
+  <circle cx="1062" cy="76" r="6" fill="#d59a4d"/>
+  <text x="1082" y="82" class="mono cream" font-size="14" text-anchor="end" letter-spacing="1.5">SYNTHETIC CASE STUDY</text>
+
+  <!-- Main hook -->
+  <text x="76" y="190" class="sans cream" font-size="68" font-weight="700" letter-spacing="-2.4">Before go-live,</text>
+  <text x="76" y="266" class="sans cream" font-size="68" font-weight="700" letter-spacing="-2.4">prove the data</text>
+  <text x="76" y="342" class="sans green" font-size="68" font-weight="700" letter-spacing="-2.4">is ready.</text>
+  <text x="78" y="394" class="sans muted" font-size="21">A migration control room for decisions that need evidence.</text>
+
+  <!-- Project identity -->
+  <rect x="76" y="456" width="1048" height="88" rx="5" fill="#f3f1ea"/>
+  <rect x="76" y="456" width="9" height="88" fill="#b24a42"/>
+  <text x="112" y="491" class="mono" font-size="13" font-weight="700" fill="#526b79" letter-spacing="1.5">PROJECT</text>
+  <text x="112" y="523" class="sans ink" font-size="27" font-weight="700">Data Migration Assurance Hub</text>
+  <text x="1088" y="507" class="mono" font-size="14" font-weight="700" fill="#b24a42" text-anchor="end">MIG-2026-09-W03</text>
+
+  <!-- Flow -->
+  <text x="76" y="620" class="mono green" font-size="14" font-weight="700" letter-spacing="2">FROM DATA RISK TO A DECISION</text>
+  <g filter="url(#softShadow)">
+    <rect x="76" y="652" width="236" height="146" rx="5" fill="#f3f1ea"/>
+    <rect x="333" y="652" width="236" height="146" rx="5" fill="#f3f1ea"/>
+    <rect x="590" y="652" width="236" height="146" rx="5" fill="#f3f1ea"/>
+    <rect x="847" y="652" width="277" height="146" rx="5" fill="#b24a42"/>
+  </g>
+  <text x="102" y="687" class="mono" font-size="12" font-weight="700" fill="#526b79">01 / INTAKE</text>
+  <text x="102" y="730" class="sans ink" font-size="22" font-weight="700">Legacy data</text>
+  <text x="102" y="758" class="sans" font-size="15" fill="#657069">CRM + billing</text>
+  <text x="102" y="780" class="sans" font-size="15" fill="#657069">source snapshots</text>
+
+  <text x="359" y="687" class="mono" font-size="12" font-weight="700" fill="#526b79">02 / CONTROL</text>
+  <text x="359" y="730" class="sans ink" font-size="22" font-weight="700">Quality gates</text>
+  <text x="359" y="758" class="sans" font-size="15" fill="#657069">keys + nulls</text>
+  <text x="359" y="780" class="sans" font-size="15" fill="#657069">relationships</text>
+
+  <text x="616" y="687" class="mono" font-size="12" font-weight="700" fill="#526b79">03 / EVIDENCE</text>
+  <text x="616" y="730" class="sans ink" font-size="22" font-weight="700">Reconcile</text>
+  <text x="616" y="758" class="sans" font-size="15" fill="#657069">counts + amounts</text>
+  <text x="616" y="780" class="sans" font-size="15" fill="#657069">owner the gaps</text>
+
+  <text x="873" y="687" class="mono" font-size="12" font-weight="700" fill="#f6d9d5">04 / DECISION</text>
+  <text x="873" y="730" class="sans" font-size="22" font-weight="700" fill="#ffffff">HOLD FOR</text>
+  <text x="873" y="757" class="sans" font-size="22" font-weight="700" fill="#ffffff">CUTOVER</text>
+  <text x="873" y="782" class="sans" font-size="14" fill="#f6d9d5">Risk is visible. Next action is clear.</text>
+
+  <g fill="none" stroke="#a9d6b2" stroke-width="3" stroke-linecap="round">
+    <path d="M317 725H326"/>
+    <path d="M574 725H583"/>
+    <path d="M831 725H840"/>
+  </g>
+  <g fill="#a9d6b2">
+    <path d="M326 718L335 725L326 732Z"/>
+    <path d="M583 718L592 725L583 732Z"/>
+    <path d="M840 718L849 725L840 732Z"/>
+  </g>
+
+  <!-- Evidence metrics -->
+  <text x="76" y="884" class="mono green" font-size="14" font-weight="700" letter-spacing="2">REVIEW EVIDENCE</text>
+  <g filter="url(#softShadow)">
+    <rect x="76" y="914" width="316" height="154" rx="5" fill="#f3f1ea"/>
+    <rect x="410" y="914" width="316" height="154" rx="5" fill="#f3f1ea"/>
+    <rect x="744" y="914" width="380" height="154" rx="5" fill="#f3f1ea"/>
+  </g>
+  <text x="106" y="953" class="sans" font-size="15" fill="#657069">SOURCE RECORDS</text>
+  <text x="106" y="1017" class="sans ink" font-size="48" font-weight="700">660</text>
+  <text x="106" y="1047" class="mono" font-size="12" fill="#657069">accounts / invoices / transactions / contacts</text>
+  <text x="440" y="953" class="sans" font-size="15" fill="#657069">TARGET RECORDS</text>
+  <text x="440" y="1017" class="sans ink" font-size="48" font-weight="700">658</text>
+  <text x="440" y="1047" class="mono" font-size="12" fill="#657069">same snapshot window</text>
+  <text x="774" y="953" class="sans" font-size="15" fill="#657069">BLOCKING EXCEPTIONS</text>
+  <text x="774" y="1017" class="sans" font-size="48" font-weight="700" fill="#b24a42">4</text>
+  <text x="858" y="1013" class="sans" font-size="17" font-weight="700" fill="#b24a42">high severity</text>
+  <text x="858" y="1045" class="mono" font-size="12" fill="#657069">assigned before go-live</text>
+
+  <!-- PM value section -->
+  <rect x="76" y="1120" width="1048" height="230" rx="5" fill="#26372f" stroke="#52665b"/>
+  <text x="110" y="1160" class="mono green" font-size="13" font-weight="700" letter-spacing="1.5">WHAT I BRING AS A DATA PROJECT MANAGER</text>
+  <line x1="110" y1="1182" x2="1090" y2="1182" stroke="#52665b"/>
+  <circle cx="123" cy="1221" r="5" fill="#d59a4d"/>
+  <text x="146" y="1228" class="sans cream" font-size="20" font-weight="700">Align business risk with technical delivery</text>
+  <circle cx="123" cy="1270" r="5" fill="#d59a4d"/>
+  <text x="146" y="1277" class="sans cream" font-size="20" font-weight="700">Make ownership and next actions visible</text>
+  <circle cx="123" cy="1319" r="5" fill="#d59a4d"/>
+  <text x="146" y="1326" class="sans cream" font-size="20" font-weight="700">Turn data quality into a go / no-go decision</text>
+
+  <!-- Footer -->
+  <text x="76" y="1418" class="sans cream" font-size="19" font-weight="700">Yael Chavarria</text>
+  <text x="76" y="1448" class="mono muted" font-size="13">DATA PROJECT MANAGER / MEXICO / WORKING GLOBALLY</text>
+  <text x="1124" y="1418" class="mono green" font-size="13" text-anchor="end">PYTHON  /  DUCKDB  /  DBT  /  STREAMLIT</text>
+  <text x="1124" y="1448" class="mono muted" font-size="13" text-anchor="end">yaelchavarria.github.io/portfolio</text>
+</svg>

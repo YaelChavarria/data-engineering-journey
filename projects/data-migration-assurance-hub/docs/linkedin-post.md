@@ -1,46 +1,38 @@
 # Recruiter-facing LinkedIn Post
 
 ```text
-Moving data is easy.
+Una migración de datos no termina cuando el pipeline termina.
 
-Proving that nothing important broke is the real project.
+Termina cuando el equipo puede responder, con evidencia, si es seguro avanzar.
 
-That is the idea behind my latest project: Data Migration Assurance Hub.
+Esa fue la idea detrás de mi proyecto más reciente: Data Migration Assurance Hub.
 
-I designed it as a client-ready control room for companies migrating data from legacy CRM and billing systems into a modern analytics warehouse.
+Como Project Manager especializado en data, me interesa trabajar en el punto donde se encuentran tres cosas: el riesgo del negocio, la calidad de los datos y las decisiones que el equipo necesita tomar.
 
-The goal is not only to move records.
+Por eso no quise construir solamente otro dashboard. Diseñé una pequeña sala de control para una migración de un CRM y una plataforma de facturación hacia un analytics warehouse.
 
-The goal is to answer, with evidence:
+El sistema compara los snapshots de origen y destino, valida cuentas, facturas, transacciones y contactos, y convierte las diferencias en algo accionable:
 
-- Did every important record arrive?
-- Were invoice and transaction amounts preserved?
-- Were duplicate keys identified?
-- Did relationships between entities remain valid?
-- Which records require review before go-live?
-- Is the migration ready to be accepted?
+• qué registro tiene un problema
+• qué tipo de excepción existe
+• qué tan grave es
+• quién debe atenderla
+• si la migración está lista para el cutover
 
-The project includes:
+La regla más importante es simple: si existe una excepción de alta severidad, la decisión es HOLD.
 
-- Source profiling and quality gates
-- Source-to-target reconciliation
-- Record-level exception management
-- Severity and owner assignment
-- Cutover readiness decision
-- Go/no-go checklist
-- Rollback documentation
-- Client acceptance evidence
+No se maquilla el resultado para que parezca que todo salió bien. Se documenta el riesgo, se asigna un responsable y se conserva la evidencia para la revisión con Data, Finance y Business.
 
-The default review scenario intentionally returns HOLD FOR CUTOVER. It contains controlled discrepancies so the system can show missing records, duplicate keys and a monetary mismatch instead of pretending that every migration is clean.
+El proyecto incluye quality gates, reconciliación de conteos y montos, cola de excepciones, checklist go/no-go, manifest de migración y un control room en Streamlit. La implementación usa Python, DuckDB, dbt y Parquet.
 
-This is a synthetic case study built to demonstrate how I would manage a migration engagement from discovery to validation and cutover review.
+El caso es sintético, pero el problema es muy real: una migración puede verse exitosa y aun así perder registros, duplicar claves o cambiar el significado financiero de los datos.
 
-The implementation uses Python, DuckDB, dbt, Parquet and Streamlit.
+Estoy abierta a conversar con equipos que busquen una Project Manager de Data para liderar iniciativas de data engineering, data operations o data products, ya sea en una posición remota o como contractor.
 
-Portfolio and project case study:
+Si estás trabajando en una migración, una plataforma de datos o un problema de calidad que necesita orden y seguimiento, me encantará conocerlo.
+
+Portfolio y caso de estudio:
 https://yaelchavarria.github.io/portfolio/
 
-I am open to remote Data Engineering, Data Operations and Data Product opportunities with international teams. Based in Mexico and comfortable working across distributed teams.
-
-#DataEngineering #DataMigration #DataOperations #RemoteWork
+#DataEngineering #DataMigration #DataOperations #DataQuality #DataProjectManagement #OpenToWork
 ```
